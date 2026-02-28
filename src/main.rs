@@ -103,6 +103,10 @@ async fn main() -> io::Result<()> {
         default_hook(info);
     }));
 
+    rustls::crypto::ring::default_provider()
+        .install_default()
+        .map_err(|_| io::Error::other("Failed to install rustls crypto provider"))?;
+
     let cli = match Cli::try_parse() {
         Ok(cli) => cli,
         Err(err) => {
